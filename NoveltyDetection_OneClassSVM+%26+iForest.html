@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>NoveltyDetection_OneClassSVM</title>
+<title>NoveltyDetection_OneClassSVM & iForest</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -11748,14 +11748,15 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 异常点检测算法-One Class SVM</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 异常点检测算法-One Class SVM 和 iForest</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">OneClassSVM</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">IsolationForest</span>
 </pre></div>
 
 </div>
@@ -12059,10 +12060,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="prompt input_prompt">In&nbsp;[136]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">OneClassSVM</span><span class="p">(</span><span class="n">nu</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 使用OneClassSVM</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">OneClassSVM</span><span class="p">(</span><span class="n">nu</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 
 <span class="c1"># 查看训练集上的分类情况</span>
@@ -12111,20 +12114,82 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[63]:</div>
+<div class="prompt input_prompt">In&nbsp;[137]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">support_vector</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">support_vectors_</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 输出oneClassSVM的支持向量</span>
+
+<span class="n">support_vector</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">support_vectors_</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">support_vector</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[ 1.51041315  2.87333309]
+ [ 2.62204234  1.46755395]
+ [ 1.744406    1.00101415]
+ [-2.48958685 -1.12666691]
+ [-1.37795766 -2.53244605]
+ [-2.255594   -2.99898585]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[88]:</div>
+<div class="prompt input_prompt">In&nbsp;[133]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 使用iForest</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">max_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">contamination</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="n">predict_train</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">predict_test</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">predict_outlier</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_outliers</span><span class="p">)</span>
+
+<span class="n">predict_train_err</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">predict_train</span><span class="p">[</span><span class="n">predict_train</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">predict_test_err</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">predict_test</span><span class="p">[</span><span class="n">predict_test</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">predict_outlier_err</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">predict_outlier</span><span class="p">[</span><span class="n">predict_outlier</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;训练集中错误点：&quot;</span><span class="o">+</span><span class="n">predict_train_err</span><span class="o">+</span><span class="s2">&quot; 测试集中错误点：&quot;</span><span class="o">+</span><span class="n">predict_test_err</span><span class="o">+</span><span class="s2">&quot; 离群点中的错误点：&quot;</span><span class="o">+</span><span class="n">predict_outlier_err</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>训练集中错误点：1 测试集中错误点：0 离群点中的错误点：11
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[134]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 画出散点图</span>
