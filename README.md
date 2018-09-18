@@ -3,24 +3,24 @@
 
 ## 分类算法
 
-逻辑斯特回归 (LogisticRegression, LR)
-K近邻 (KNN)
-朴素贝叶斯 (NaiveBayes, NB)
-支持向量机 (SVM)
-决策树 (DecisionTree)
+逻辑斯特回归 (LogisticRegression, LR) <br />
+K近邻 (KNN) <br />
+朴素贝叶斯 (NaiveBayes, NB) <br />
+支持向量机 (SVM) <br />
+决策树 (DecisionTree) <br />
 
 ## 集成学习
 
-Adaboost 
-Xgboost
+Adaboost  <br />
+Xgboost <br />
 
 ## 聚类算法
 
-KMeans
+KMeans <br />
 
 ## 特征工程
 
-特征归一化 (DataNormalizaiton)
-特征OneHot编码 (OneHotEncoding)
-异常点检测 (OneClassSVM)
-特征采样 (SMOTE)
+特征归一化 (DataNormalizaiton) <br />
+特征OneHot编码 (OneHotEncoding) <br />
+异常点检测 (OneClassSVM) <br />
+特征采样 (SMOTE) <br />
