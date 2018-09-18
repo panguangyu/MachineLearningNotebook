@@ -14,6 +14,8 @@ K近邻 (KNN) <br />
 
 Adaboost  <br />
 Xgboost <br />
+Bagging <br />
+随机森林 (RandomForest) <br />
 
 ## 聚类算法
 
