@@ -3,7 +3,7 @@
 
 ## 分类算法
 
-感知机 (Perceptron)
+感知机 (Perceptron) <br />
 逻辑斯特回归 (LogisticRegression, LR) <br />
 K近邻 (KNN) <br />
 朴素贝叶斯 (NaiveBayes, NB) <br />
